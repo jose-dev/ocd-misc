@@ -27,7 +27,7 @@ class Sku(object):
                                     description=self.description,
                                     weight=self.MAX_SCORE))
 
-    def add_alterative(self, sku_item):
+    def add_alterative(self, sku_item=None):
         self.alternatives.append(sku_item)
 
 

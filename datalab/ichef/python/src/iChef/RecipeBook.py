@@ -11,6 +11,16 @@ def prepare_recipe_book(filename=None):
     pass
 
 
+class MatchedIngredient(object):
+    def __init__(self, ingredient=None, matched_sku=None):
+        self.sku = ingredient.sku
+        self.description = ingredient.description
+        self.recipe_id = ingredient.recipe_id
+        self.weight = ingredient.weight
+        self.matched_sku = matched_sku
+        self.is_alternative = matched_sku == ingredient.sku
+
+
 class Ingredient(object):
     def __init__(self, sku=None, description=None, weight=0.0, recipe_id=None):
         self.sku = sku
@@ -42,9 +52,10 @@ class RecipeBook(object):
     def add_recipe(self, recipe=None):
         self.recipes[recipe.id] = recipe
 
-    def find_recipe_ingredient_for_sku(self, sku=None):
+    def find_recipe_with_sku(self, sku=None):
         matched = []
         for recipe in self.recipes.values():
             if recipe.has_ingredient(sku):
-                matched.append(recipe.get_ingredient(sku))
+                matched.append(MatchedIngredient(ingredient=recipe.get_ingredient(sku),
+                                                 matched_sku=sku))
         return matched
