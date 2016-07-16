@@ -18,7 +18,7 @@ class MatchedIngredient(object):
         self.recipe_id = ingredient.recipe_id
         self.weight = ingredient.weight
         self.matched_sku = matched_sku
-        self.is_alternative = matched_sku == ingredient.sku
+        self.is_alternative = matched_sku != ingredient.sku
 
 
 class Ingredient(object):
