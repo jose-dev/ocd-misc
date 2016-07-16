@@ -6,7 +6,8 @@ def prepare_recipe_book(filename=None):
         - ingredients
         - recipe
         - recipeBook
-    3- return recipeBook object
+        - recipeMatcher
+    3- return recipeMatcher object
     """
     pass
 
@@ -56,6 +57,25 @@ class RecipeBook(object):
         matched = []
         for recipe in self.recipes.values():
             if recipe.has_ingredient(sku):
-                matched.append(MatchedIngredient(ingredient=recipe.get_ingredient(sku),
-                                                 matched_sku=sku))
+                matched.append(recipe.get_ingredient(sku))
         return matched
+
+
+class RecipeMatcher(object):
+    def __init__(self, recipe_book=None):
+        self.recipe_book = recipe_book
+
+    def search_recipe_book(self, sku_alternative_list=None):
+        matched = []
+        for sku in sku_alternative_list:
+            if self.recipe_book.has_ingredient(sku.id):
+                for ingredient in self.recipe_book.find_recipe_with_sku(sku.id):
+                    matched.append(MatchedIngredient(ingredient=ingredient,
+                                                     matched_sku=sku_alternative_list[0].id))
+            if len(matched) > 0:
+                break
+        return matched
+
+
+
+

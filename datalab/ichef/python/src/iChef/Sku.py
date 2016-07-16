@@ -4,8 +4,8 @@ def prepare_sku(filename=None):
     1- read file into dictionary
     2- create objects:
         - sku as a list of alternatives with main sku at top
-        - sku list
-    3- return sku list object
+        - sku catalogue
+    3- return sku catalogue object
     """
     pass
 
@@ -38,10 +38,3 @@ class SkuCatalogue(object):
 
     def add_sku(self, sku=None):
         self.catalogue[sku.id] = sku
-
-    def has_ingredient(self, sku=None):
-        return self.ingredients.has_key(sku)
-
-    def get_ingredient(self, sku=None):
-        return self.ingredients.get(sku, None)
-
