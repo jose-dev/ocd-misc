@@ -28,6 +28,28 @@ class SkuTest(unittest.TestCase):
         self.assertEqual(sku.alternatives[1].description, "alternative to sku 1")
         self.assertEqual(sku.alternatives[1].weight, 2.1)
 
+
+    def test_return_alternatives_sorted(self):
+        sku = Sku(id="sku_001", description="main sku")
+        sku.add_alternatives([SkuItem(sku="sku_002",
+                                      description="alternative to sku 1",
+                                      weight=2.0),
+                              SkuItem(sku="sku_003",
+                                      description="alternative to sku 1",
+                                      weight=30.0),
+                              SkuItem(sku="sku_004",
+                                      description="alternative to sku 1",
+                                      weight=10.0)]
+                             )
+
+        result = sku.get_alternatives()
+        self.assertEqual(len(result), 4)
+        self.assertEqual(result[0].sku, "sku_001")
+        self.assertEqual(result[1].sku, "sku_003")
+        self.assertEqual(result[2].sku, "sku_004")
+        self.assertEqual(result[3].sku, "sku_002")
+
+
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(SkuTest)
     unittest.TextTestRunner(verbosity=2).run(suite)
