@@ -31,6 +31,19 @@ class Sku(object):
     def add_alternative(self, sku_item=None):
         self.alternatives.append(sku_item)
 
+    def add_alternatives(self, sku_items=None):
+        for sku_item in sku_items:
+            self.add_alternative(sku_item)
+
+    def get_alternatives(self):
+        """
+            TODO
+
+            needs to return alternatives ordered by weight in decreseasing
+            order
+        """
+        pass
+
 
 class SkuCatalogue(object):
     def __init__(self):

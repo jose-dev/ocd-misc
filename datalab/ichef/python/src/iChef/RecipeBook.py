@@ -103,15 +103,19 @@ class RecipeMatcher(object):
                 break
         return matched
 
-"""
 
-    TODO
+class MatchedRecipe(object):
+    """
 
-    Implement MatchedRecipe class to collect the MatchedIngredient objects and group
-    them into recipes to calculate total score and also to organise ingredients into
-    found/missing in basket.
+        TODO
 
-"""
+        Implement MatchedRecipe class to collect the MatchedIngredient objects and group
+        them into recipes to calculate total score and also to organise ingredients into
+        found/missing in basket.
+
+    """
+    pass
+
 
 
 
