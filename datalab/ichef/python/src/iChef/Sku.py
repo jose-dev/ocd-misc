@@ -16,6 +16,7 @@ class SkuItem(object):
         self.description = description
         self.weight = weight
 
+
 class Sku(object):
     MAX_SCORE = 100.0
 
@@ -23,13 +24,12 @@ class Sku(object):
         self.id = id
         self.description = description
         self.alternatives = []
-        self.add_alterative(SkuItem(sku=self.id,
-                                    description=self.description,
-                                    weight=self.MAX_SCORE))
+        self.add_alternative(SkuItem(sku=self.id,
+                                     description=self.description,
+                                     weight=self.MAX_SCORE))
 
-    def add_alterative(self, sku_item=None):
+    def add_alternative(self, sku_item=None):
         self.alternatives.append(sku_item)
-
 
 
 class SkuCatalogue(object):
@@ -38,3 +38,12 @@ class SkuCatalogue(object):
 
     def add_sku(self, sku=None):
         self.catalogue[sku.id] = sku
+
+    def list_skus(self):
+        return self.catalogue.keys()
+
+    def has_sku(self, sku_id):
+        return self.catalogue.has_key(sku_id)
+
+    def get_sku(self, sku_id):
+        return self.catalogue.get(sku_id)
