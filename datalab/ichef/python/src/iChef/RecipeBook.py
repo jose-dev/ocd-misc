@@ -15,6 +15,12 @@ def prepare_recipe_book(filename=None):
 
     RecipeMatcher may not be needed, just recipeBook. RecipeBook object should
     be populated one ingredient entry at the time instead for a complete dictionary.
+
+
+    RecipeBook could also have:
+        - recipes dictionary
+        - ingredients dictionary (denormalised ingredients) --> recipes dictionary may not need
+            to contain all the information for the ingredients, just the if and weight
     """
     pass
 
@@ -95,10 +101,9 @@ class RecipeMatcher(object):
     def search_recipe_book(self, sku_alternative_list=None):
         matched = []
         for sku in sku_alternative_list:
-            if self.recipe_book.has_ingredient(sku.id):
-                for ingredient in self.recipe_book.find_recipe_with_sku(sku.id):
-                    matched.append(MatchedIngredient(ingredient=ingredient,
-                                                     matched_sku=sku_alternative_list[0].id))
+            for ingredient in self.recipe_book.find_recipe_with_sku(sku.sku):
+                matched.append(MatchedIngredient(ingredient=ingredient,
+                                                 matched_sku=sku_alternative_list[0].sku))
             if len(matched) > 0:
                 break
         return matched
