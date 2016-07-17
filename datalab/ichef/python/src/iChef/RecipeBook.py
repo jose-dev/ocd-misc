@@ -46,6 +46,15 @@ class RecipeBook(object):
     def add_recipe(self, recipe=None):
         self.recipes[recipe.id] = recipe
 
+    def list_recipes(self):
+        return self.recipes.keys()
+
+    def has_recipe(self, sku=None):
+        return self.recipes.has_key(sku)
+
+    def get_recipe(self, sku=None):
+        return self.recipes.get(sku, None)
+
     def find_recipe_with_sku(self, sku=None):
         matched = []
         for recipe in self.recipes.values():
