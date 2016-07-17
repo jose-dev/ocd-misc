@@ -39,6 +39,10 @@ class SkuCatalogue(object):
     def add_sku(self, sku=None):
         self.catalogue[sku.id] = sku
 
+    def add_skus(self, skus=None):
+        for sku in skus:
+            self.add_sku(sku)
+
     def list_skus(self):
         return self.catalogue.keys()
 
