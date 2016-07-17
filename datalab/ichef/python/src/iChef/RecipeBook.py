@@ -29,6 +29,10 @@ class Recipe(object):
     def add_ingredient(self, ingredient=None):
         self.ingredients[ingredient.sku] = ingredient
 
+    def add_ingredients(self, ingredients=None):
+        for ingredient in ingredients:
+            self.add_ingredient(ingredient)
+
     def list_ingredients(self):
         return self.ingredients.keys()
 
@@ -45,6 +49,10 @@ class RecipeBook(object):
 
     def add_recipe(self, recipe=None):
         self.recipes[recipe.id] = recipe
+
+    def add_recipes(self, recipes=None):
+        for recipe in recipes:
+            self.add_recipe(recipe)
 
     def list_recipes(self):
         return self.recipes.keys()
