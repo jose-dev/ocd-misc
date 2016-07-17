@@ -12,16 +12,6 @@ def prepare_recipe_book(filename=None):
     pass
 
 
-class MatchedIngredient(object):
-    def __init__(self, ingredient=None, matched_sku=None):
-        self.sku = ingredient.sku
-        self.description = ingredient.description
-        self.recipe_id = ingredient.recipe_id
-        self.weight = ingredient.weight
-        self.matched_sku = matched_sku
-        self.is_alternative = matched_sku != ingredient.sku
-
-
 class Ingredient(object):
     def __init__(self, sku=None, description=None, weight=0.0, recipe_id=None):
         self.sku = sku
@@ -38,6 +28,9 @@ class Recipe(object):
 
     def add_ingredient(self, ingredient=None):
         self.ingredients[ingredient.sku] = ingredient
+
+    def list_ingredients(self):
+        return self.ingredients.keys()
 
     def has_ingredient(self, sku=None):
         return self.ingredients.has_key(sku)
@@ -61,6 +54,16 @@ class RecipeBook(object):
         return matched
 
 
+class MatchedIngredient(object):
+    def __init__(self, ingredient=None, matched_sku=None):
+        self.sku = ingredient.sku
+        self.description = ingredient.description
+        self.recipe_id = ingredient.recipe_id
+        self.weight = ingredient.weight
+        self.matched_sku = matched_sku
+        self.is_alternative = matched_sku != ingredient.sku
+
+
 class RecipeMatcher(object):
     def __init__(self, recipe_book=None):
         self.recipe_book = recipe_book
@@ -76,6 +79,15 @@ class RecipeMatcher(object):
                 break
         return matched
 
+"""
+
+    TODO
+
+    Implement MatchedRecipe class to collect the MatchedIngredient objects and group
+    them into recipes to calculate total score and also to organise ingredients into
+    found/missing in basket.
+
+"""
 
 
 
