@@ -8,6 +8,13 @@ def prepare_recipe_book(filename=None):
         - recipeBook
         - recipeMatcher
     3- return recipeMatcher object
+
+
+    IMPORTANT:
+    -----------
+
+    RecipeMatcher may not be needed, just recipeBook. RecipeBook object should
+    be populated one ingredient entry at the time instead for a complete dictionary.
     """
     pass
 
