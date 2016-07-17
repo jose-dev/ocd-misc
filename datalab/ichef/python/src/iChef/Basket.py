@@ -26,3 +26,14 @@ class Basket(object):
     def add_item(self, item=None):
         self.items[item.sku] = item
 
+    def list_items(self):
+        return self.items.keys()
+
+
+    def has_item(self, sku_id):
+        return self.items.has_key(sku_id)
+
+
+    def get_item(self, sku_id):
+        return self.items.get(sku_id)
+
