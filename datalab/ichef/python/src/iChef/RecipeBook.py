@@ -1,35 +1,23 @@
+import operator
 
 def prepare_recipe_book(filename=None):
     """
-    1- read file into dictionary
-    2- create objects:
-        - ingredients
-        - recipe
-        - recipeBook
-        - recipeMatcher
-    3- return recipeMatcher object
-
-
-    IMPORTANT:
-    -----------
-
-    RecipeMatcher may not be needed, just recipeBook. RecipeBook object should
-    be populated one ingredient entry at the time instead for a complete dictionary.
-
-
-    RecipeBook could also have:
-        - recipes dictionary
-        - ingredients dictionary (denormalised ingredients) --> recipes dictionary may not need
-            to contain all the information for the ingredients, just the if and weight
+    1- read file
+    2- read line by line adding each entry to recipe book individually
+    3- return recipeBook object
     """
     pass
 
 
 class Ingredient(object):
-    def __init__(self, sku=None, description=None, weight=0.0, recipe_id=None):
+    def __init__(self, sku=None, description=None):
         self.sku = sku
         self.description = description
-        self.recipe_id = recipe_id
+
+
+class RecipeIngredient(object):
+    def __init__(self, sku=None, weight=0.0):
+        self.sku = sku
         self.weight = weight
 
 
@@ -59,67 +47,128 @@ class Recipe(object):
 class RecipeBook(object):
     def __init__(self):
         self.recipes = {}
+        self.ingredients = {}
 
-    def add_recipe(self, recipe=None):
-        self.recipes[recipe.id] = recipe
+    def has_ingredient(self, sku=None):
+        return self.ingredients.has_key(sku)
 
-    def add_recipes(self, recipes=None):
-        for recipe in recipes:
-            self.add_recipe(recipe)
+    def add_ingredient(self, ingredient=None):
+        self.ingredients[ingredient.sku] = ingredient
+
+    def add_recipe_ingredient(self, recipe_id=None, ingredient=None):
+        self.recipes[recipe_id].add_ingredient(ingredient)
+
+    def list_ingredients(self):
+        return self.ingredients.keys()
+
+    def get_ingredient(self, sku=None):
+        return self.ingredients.get(sku, None)
+
+    def has_recipe(self, recipe_id=None):
+        return self.recipes.has_key(recipe_id)
+
+    def create_recipe(self, id=None, name=None):
+        self.recipes[id] = Recipe(id, name)
+
+    def add_entry(self,sku=None, sku_description=None, weight=0.0, recipe_id=None, recipe_name=None):
+        if not self.has_ingredient(sku):
+            self.add_ingredient(Ingredient(sku, sku_description))
+        if not self.has_recipe(recipe_id):
+            self.create_recipe(recipe_id, recipe_name)
+        self.add_recipe_ingredient(recipe_id, RecipeIngredient(sku, weight))
 
     def list_recipes(self):
         return self.recipes.keys()
-
-    def has_recipe(self, sku=None):
-        return self.recipes.has_key(sku)
 
     def get_recipe(self, sku=None):
         return self.recipes.get(sku, None)
 
     def find_recipe_with_sku(self, sku=None):
         matched = []
-        for recipe in self.recipes.values():
-            if recipe.has_ingredient(sku):
-                matched.append(recipe.get_ingredient(sku))
-        return matched
-
-
-class MatchedIngredient(object):
-    def __init__(self, ingredient=None, matched_sku=None):
-        self.sku = ingredient.sku
-        self.description = ingredient.description
-        self.recipe_id = ingredient.recipe_id
-        self.weight = ingredient.weight
-        self.matched_sku = matched_sku
-        self.is_alternative = matched_sku != ingredient.sku
-
-
-class RecipeMatcher(object):
-    def __init__(self, recipe_book=None):
-        self.recipe_book = recipe_book
-
-    def search_recipe_book(self, sku_alternative_list=None):
-        matched = []
-        for sku in sku_alternative_list:
-            for ingredient in self.recipe_book.find_recipe_with_sku(sku.sku):
-                matched.append(MatchedIngredient(ingredient=ingredient,
-                                                 matched_sku=sku_alternative_list[0].sku))
+        for sku_item in sku.get_alternatives():
+            if self.has_ingredient(sku_item.sku):
+                for recipe in self.recipes.values():
+                    if recipe.has_ingredient(sku_item.sku):
+                        recipe_ingredient = recipe.get_ingredient(sku_item.sku)
+                        matched.append(MatchedIngredient(ingredient=recipe_ingredient,
+                                                         recipe=recipe.id,
+                                                         basket_sku=sku.id))
             if len(matched) > 0:
                 break
         return matched
 
 
-class MatchedRecipe(object):
-    """
+class MatchedIngredient(object):
+    def __init__(self, ingredient=None, basket_sku=None, recipe=None):
+        self.recipe_sku = ingredient.sku
+        self.weight = ingredient.weight
+        self.recipe_id = recipe
+        if basket_sku:
+            self.set_basket_sku(basket_sku)
 
-        TODO
+    def set_basket_sku(self, sku=None):
+        self.basket_sku = sku
+        self.is_alternative = sku != self.recipe_sku
 
-        Implement MatchedRecipe class to collect the MatchedIngredient objects and group
-        them into recipes to calculate total score and also to organise ingredients into
-        found/missing in basket.
 
-    """
-    pass
+class RecipeMatchedIngredient(object):
+    def __init__(self, matched_ingredient=None):
+        self.recipe_sku = matched_ingredient.recipe_sku
+        self.basket_sku = matched_ingredient.basket_sku
+        self.is_alternative = matched_ingredient.is_alternative
+        self.weight = matched_ingredient.weight
+
+
+class MatchedRecipe(Recipe):
+    score = 0.0
+
+    def update_score(self, weight=0.0):
+        self.score += weight
+
+    def add_ingredient(self, ingredient=None):
+        self.ingredients[ingredient.recipe_sku] = ingredient
+        self.update_score(ingredient.weight)
+
+
+class MatchedRecipeList(object):
+    def __init__(self, matched_ingredients=None):
+        self.recipes = {}
+        self.add_matched_ingredients(matched_ingredients)
+
+    def add_matched_ingredient(self, ingredient=None):
+        if not self.has_recipe(ingredient.recipe_id):
+            self.create_recipe(ingredient.recipe_id)
+        self.add_recipe_ingredient(ingredient.recipe_id, RecipeMatchedIngredient(ingredient))
+
+    def add_matched_ingredients(self, ingredients=None):
+        for ingredient in ingredients:
+            self.add_matched_ingredient(ingredient)
+
+    def has_recipe(self, recipe_id=None):
+        return self.recipes.has_key(recipe_id)
+
+    def create_recipe(self, id=None):
+        self.recipes[id] = MatchedRecipe(id)
+
+    def add_recipe_ingredient(self, recipe_id=None, ingredient=None):
+        self.recipes[recipe_id].add_ingredient(ingredient)
+
+    def list_recipes(self):
+        return self.recipes.keys()
+
+    def get_recipe(self, recipe_id=None):
+        return self.recipes.get(recipe_id, None)
+
+    def get_recipe_score(self, recipe_id=None):
+        return self.get_recipe(recipe_id).score
+
+    def sort_recipes_by_score(self, score=0.0):
+        d = {k: self.get_recipe_score(k) for k in self.list_recipes() if self.get_recipe_score(k) >= score}
+        return sorted(d.items(), key=operator.itemgetter(0))
+
+    def filter_recipes_by_score(self, score=0.5):
+        return self.sort_recipes_by_score(score)
+
 
 
 

@@ -39,8 +39,7 @@ class SkuTest(unittest.TestCase):
                                       weight=30.0),
                               SkuItem(sku="sku_004",
                                       description="alternative to sku 1",
-                                      weight=10.0)]
-                             )
+                                      weight=10.0)])
 
         result = sku.get_alternatives()
         self.assertEqual(len(result), 4)
