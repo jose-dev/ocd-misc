@@ -24,23 +24,34 @@ def random_integer(n):
     return rg.random_integer_by_range(1, n+1)
 
 
-def define_catalogue(n=20):
+def random_second(min=0, max=30):
+    return rg.random_integer_by_range(min, max)
+
+
+def define_catalogue(n=200):
     catalogue = {}
-    for n in range(1, n):
+    for n in range(0, n):
         catalogue[n] = {"sku_id": random_string(),
                         "layout_id": random_string(4)}
     return catalogue
 
 
-def define_trolley():
+def define_routes(n=3):
     routes = [];
-    for i in range(1, 3):
+    for i in range(0, n):
         routes.append(random_string(8))
+    return routes
 
+
+def define_orders(routes=None, n=6):
     orders = {};
-    for i in range(1, random_integer(6)+1):
+    for i in range(0, n):
         orders[random_string(4)] = random_element(routes)
-        
+
+    return orders
+
+
+def define_trolley(orders=None):
     trolley = {}
     for n in range(1, 7):
         order_id = random_element(orders.keys())
@@ -63,7 +74,7 @@ def generate_pick_item_data(ContainerId=random_string(),
                             ContainerType=random_element(CONTAINER_TYPES),
                             OrderId=None,
                             RouteId=None,
-                            PickTime=None           ,
+                            PickTime=None,
                             QuantityType=random_element(QUANTITY_TYPES),
                             QuantityToPick=None,
                             QuantityPicked=None):
@@ -134,7 +145,7 @@ def generate_pickwalk_object_data(StoreId=None,
             }
 
         
-def generate_pick_objects(no_objects=None, store_id=None, pickwalk_id=None, catalogue=None,
+def generate_pick_objects(delay=None, no_objects=None, catalogue=None,
                          trolley=None, picker_id=None, start_time=None):
     pick_objects = []
     
@@ -150,14 +161,14 @@ def generate_pick_objects(no_objects=None, store_id=None, pickwalk_id=None, cata
         quantity_type = random_element(QUANTITY_TYPES)
         
         start_client_timestamp = copy.deepcopy(running_time)
-        running_time += timedelta(seconds=random_integer(180))
+        running_time += timedelta(seconds=delay + random_second(30, 180))
         
         picks = []
         for tray in trolley.keys():
             quantity = random_integer(4) - 1
             if quantity > 0:
                 container_position = random_integer(NUMBER_POSITIONS)
-                running_time += timedelta(seconds=random_integer(20))
+                running_time += timedelta(seconds=random_second(5, 20))
                 picks.append(generate_pick_item_data(ContainerId=trolley[tray]["container_id"],
                                                      ContainerPosition=container_position,
                                                      ContainerType=container_type,
@@ -168,72 +179,97 @@ def generate_pick_objects(no_objects=None, store_id=None, pickwalk_id=None, cata
                                                      QuantityToPick=quantity,
                                                      QuantityPicked=quantity))
                 
-        pick_object = generate_pick_object_data(StoreId=store_id,
-                                                PickwalkId=pickwalk_id,
-                                                PickerId=picker_id,
+        pick_object = generate_pick_object_data(PickerId=picker_id,
                                                 layoutPositionId=layout,
                                                 SkuId=sku,
                                                 Regime=regime,
                                                 StartClientTimestamp=start_client_timestamp.strftime("%Y-%m-%d %H:%M:%S"),
                                                 EndClientTimestamp=running_time.strftime("%Y-%m-%d %H:%M:%S"),
                                                 PickingDurationInSeconds=(running_time - start_client_timestamp).total_seconds(),
-                                                _NamePartition=start_client_timestamp.strftime("%Y%m%d"),
-                                                _createdAt=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                                                 PickedItems=picks)
         
         pick_objects.append(pick_object)
         
         # adding idle time
-        running_time += timedelta(seconds=random_integer(10))
+        running_time += timedelta(seconds=random_second(1, 10))
         
     return pick_objects
 
 
-        
-def generate_pickwalk_object(no_objects=None, store_id=None, pickwalk_id=None, catalogue=None,
+def sum_picks_duration(pick_objects=None):
+    tot = 0
+    for pdo in pick_objects:
+        tot += pdo["PickingDurationInSeconds"]
+    return tot
+
+
+def calculate_pickwalk_duration(pick_objects=None):
+    start = datetime.strptime(pick_objects[0]["StartClientTimestamp"], "%Y-%m-%d %H:%M:%S")
+    end = datetime.strptime(pick_objects[-1]["EndClientTimestamp"], "%Y-%m-%d %H:%M:%S")
+    return (end - start).total_seconds()
+
+
+def generate_pickwalk_object(delay=None, no_objects=None, store_id=None, pickwalk_id=None, catalogue=None,
                              trolley=None, picker_id=None, start_time=None):
-    pick_objects = generate_pick_objects(no_objects=10,
-                                        store_id=store_id,
-                                        pickwalk_id=pickwalk_id,
+    pick_objects = generate_pick_objects(delay=delay,
+                                         no_objects=10,
                                         picker_id=picker_id,
                                         trolley=trolley,
                                         catalogue=catalogue,
                                         start_time=copy.deepcopy(start_time))
-    
-    return generate_pickwalk_object_data(StoreId=None,
-                                         PickwalkId=None,
+
+    picks_duration = sum_picks_duration(pick_objects)
+    pickwalk_duration = calculate_pickwalk_duration(pick_objects)
+
+    return generate_pickwalk_object_data(StoreId=store_id,
+                                         PickwalkId=pickwalk_id,
                                          PickerIds=[picker_id],
                                          StartClientTimestamp=pick_objects[0]["StartClientTimestamp"],
                                          EndClientTimestamp=pick_objects[-1]["EndClientTimestamp"],
-                                         PicksDurationInSeconds=0.0,
-                                         IdleTimeInSeconds=0.0,
-                                         PickwalkDurationInSeconds=0.0,
+                                         PicksDurationInSeconds=picks_duration,
+                                         IdleTimeInSeconds=pickwalk_duration - picks_duration,
+                                         PickwalkDurationInSeconds=pickwalk_duration,
                                          _NamePartition=start_time.strftime("%Y%m%d"),
                                          _createdAt=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                                          Picks=pick_objects)
  
+def define_pickers(n=4):
+    pickers = {}
+    for i in range(0, 4):
+        delay = 0
+        if i == 0:
+            delay = 30
+        pickers[random_string()] = delay
+    return pickers
+
 
 def main():
     store_id = random_string()
-    start_time = datetime.today() - timedelta(days=1)
+    pickers = define_pickers()
     catalogue = define_catalogue()
-    
-    pickwalk_objects = []
-    for i in range(0, 4):
-        pickwalk_id = random_string()
-        picker_id = random_string()
-        trolley = define_trolley()
-        pickwalk_objects.append(generate_pickwalk_object(no_objects=10,
-                                                         store_id=store_id,
-                                                         pickwalk_id=pickwalk_id,
-                                                         picker_id=picker_id,
-                                                         trolley=trolley,
-                                                         catalogue=catalogue,
-                                                         start_time=copy.deepcopy(start_time) + timedelta(minutes=random_integer(60))))
-    
-    pprint.pprint(pickwalk_objects)
-    #for pdo in pick_objects:
-    #    print(json.dumps(pdo))
+
+    for day_delta in [2, 1]:
+        start_time = datetime.today() - timedelta(days=day_delta)
+        routes = define_routes()
+        orders = define_orders(routes=routes)
+
+        pickwalk_objects = []
+        for picker_id in pickers.keys():
+            pickwalk_id = random_string()
+            delay = pickers[picker_id]
+            trolley = define_trolley(orders)
+            pickwalk_objects.append(generate_pickwalk_object(delay=delay,
+                                                             no_objects=10,
+                                                             store_id=store_id,
+                                                             pickwalk_id=pickwalk_id,
+                                                             picker_id=picker_id,
+                                                             trolley=trolley,
+                                                             catalogue=catalogue,
+                                                             start_time=copy.deepcopy(start_time) + timedelta(minutes=random_integer(60))))
+
+        pprint.pprint(pickwalk_objects)
+        #for pdo in pick_objects:
+        #    print(json.dumps(pdo))
 
 
 if __name__ == '__main__':
