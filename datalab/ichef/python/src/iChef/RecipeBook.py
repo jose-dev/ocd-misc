@@ -164,7 +164,7 @@ class MatchedRecipeList(object):
 
     def sort_recipes_by_score(self, score=0.0):
         d = {k: self.get_recipe_score(k) for k in self.list_recipes() if self.get_recipe_score(k) >= score}
-        return sorted(d.items(), key=operator.itemgetter(0))
+        return sorted(d.items(), key=operator.itemgetter(1), reverse=True)
 
     def filter_recipes_by_score(self, score=0.5):
         return self.sort_recipes_by_score(score)
