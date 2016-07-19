@@ -36,7 +36,7 @@ class MatchedRecipeListTest(unittest.TestCase):
         matched_recipe_list = MatchedRecipeList(self._matched_ingredients)
         result = matched_recipe_list.filter_recipes_by_score(0.1)
         self.assertEqual(len(result), 2)
-        self.assertItemsEqual(result[0], ("recipe_001", 0.8))
+        self.assertItemsEqual(result[0], ("recipe_001", 0.7))
         self.assertItemsEqual(result[1], ("recipe_002", 0.2))
 
 
