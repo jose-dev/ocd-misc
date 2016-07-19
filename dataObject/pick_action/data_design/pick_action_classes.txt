@@ -1,0 +1,145 @@
+/*
+
+    WORKING OFFLINE:
+    ------------------------
+    
+    the device can work offline during most of the picking process.
+    
+    However, it is mandatory for the device to be connected at least two times:
+        1- to download the picking instractions (i.e. list of pick taks) --> START OF PICKWALK
+        2- to notify that all the pisk tasks have been done ---> END OF PICKWALK (and begining of buffering)
+
+*/
+
+
+
+
+// comes from fulfill management + cubing
+class Order(
+    entityId: String,                          ---> order_id
+    storeId: String,
+    version: DateTime,                         ---> the last time the whole entity was updated
+    deliveryStartTime: Option[DateTime],
+    departmentId: Option[String[,
+    route: Option[Route],
+    orderLines: List[OrderLine]
+    containers: Set[PickingContainer]
+    releaseDate: Option[DateTime]            ---> order has been shipped
+)
+
+
+// comes from fulfill management
+class Route(
+    id: String,
+    size: Int,    # number of order in route
+    startTime: DateTime    # time of leaving warehouse
+)
+
+
+// comes from fulfill management
+class OrderLine private(
+    id: Int,
+    sku: String,
+    quantityOrdered: Int   # quantity type (most of time = totalPicks. Exception: when original sku is substituted on back-end before generating pick task list)
+)
+
+/*
+    Substitutions are not implemented yet (so this may be different later).
+    
+    Substitutions can happen:
+        1- at back-end: if inventory shows that item  is not available, the original item
+           will not be added to a pick task. Instead an adequate substitute will be selected
+        2- at device: if picker notifies the item is not available the device will present him
+           with a list of possible subsitutes. The picker will select the appropriate substitute.
+*/
+
+
+// store pick team
+// only used to know when container was completed
+class PickingContainer(
+    id: String,                  # this is equal to entityId of Container 
+    completionDate: Option[DateTime]
+)
+
+// store pick team
+class Container(
+    entityId: String,                          ---> container_id
+    storeId: String,
+    version: DateTime,                         ---> the last time the whole entity was updated 
+    lpn: Option[String],                       ---> barcode (for tote, trolley)
+    whereabouts: Option[Whereabouts],          ----> below
+    containerType: Option[String],             ----> tray (freezer or ambient), trolley, tote
+    pickTasks: List[Task],
+    deviceId: Option[String]
+)
+
+// store pick team
+class Whereabouts: Either (ContainerId & Position) or LocationId
+
+
+// store pick team
+class Task(
+    id: String,
+    orderId: String,
+    orderLineId: Int,
+    pickDetails: PickDetails,
+    locationId: String,    # location of inventory id in pick details 
+    position: String,      # position within Container
+    lastUpdated: DateTime,
+    routeStartTime: DateTime,
+    completionTime: Option[DateTime]
+)
+
+
+// store pick team
+class PickDetail(
+    skuId: String,
+    inventoryId: String,
+    batchId: Option[String],
+    totalPicks: Quantity,
+    picksDone: Quantity
+)
+
+// store pick team
+Quantity is one of EachQuantity, KiloQuantity or LitreQuantity
+
+// store pick team + external client
+class Inventory(
+    entityId: String,                          ---> inventory_id
+    storeId: String,
+    version: DateTime,                         ---> the last time the whole entity was updated
+    sku: Option[String],
+    temperatureRegmine: Option[String],
+    currentQuantity: Option[Quantity],
+    allocatedQuantity: Option[Quantity],
+    whereabouts: Whereabouts
+)
+
+//
+
+// store pick team + external client
+class Location(
+    entityId: String,                          ---> location_id
+    storeId: String,
+    version: DateTime,                         ---> the last time the whole entity was updated
+    name: Option[String],
+    type: Option[String]
+    details: Map{String, String]
+)
+
+
+
+// store pick team 
+// a task sent to the device looks like this:
+case class PickTask(
+    taskId: String,
+    orderId: String,
+    orderLineId: Int,
+    skuId: String,
+    totalPicks: Quantity,
+    picksDone: Quantity,
+    locationId: String,
+    containerId: String,
+    position: String,
+    priority: Int
+)

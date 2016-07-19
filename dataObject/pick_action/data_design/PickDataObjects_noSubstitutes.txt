@@ -1,0 +1,138 @@
+
+------
+------ PICK DATA OBJECTS
+------
+{
+    "StoreId":    "store_0001",
+    "PickwalkId":  "pickwalk_0001",
+    "PickerId":   "picker_0001",
+    "layoutPositionId": "layout_position_0001",
+    "SkuId":      "sku_0001",
+    "Regime":     "AMBIENT",
+    "StartClientTimestamp": "2015-09-29 10:11:59 UTC",
+    "EndClientTimestamp": "2015-09-29 10:11:59 UTC",
+    "PickingDurationInSeconds": "1234",
+    "_NamePartition": "20150929",
+    "_createdAt": "2015-09-29 10:11:59 UTC",
+    "PickedItems": [
+      {
+          "ContainerId": "container_0001",
+          "ContainerPosition": "position_001",
+          "ContainerType": "TRAY",
+          "OrderId":     "order_0001",
+          "RouteId":     "route_0001",
+          "PickTime": "2015-09-29 10:12:49 UTC",
+          "QuantityType": "Kilo",
+          "QuantityToPick": 3,
+          "QuantityPicked": 3
+      },
+      {
+          "ContainerId": "container_0002",
+          "ContainerPosition": "position_001",
+          "ContainerType": "TRAY",
+          "OrderId":     "order_0001",
+          "RouteId":     "route_0001",
+          "PickTime": "2015-09-29 10:12:49 UTC",
+          "QuantityType": "Kilo",
+          "QuantityToPick": 1,
+          "QuantityPicked": 1
+      },
+      {
+          "ContainerId":   "container_0003",
+          "ContainerPosition": "position_001",
+          "ContainerType": "TRAY",
+          "OrderId":       "order_0002",
+          "RouteId":       "route_0001",
+          "PickTime": "2015-09-29 10:12:49 UTC",
+          "QuantityType": "Kilo",
+          "QuantityToPick": 2,
+          "QuantityPicked": 2
+      },
+      {
+          "ContainerId":   "container_0004",
+          "ContainerPosition": "position_001",
+          "ContainerType": "TRAY",
+          "OrderId":       "order_0003",
+          "RouteId":       "route_0002",
+          "PickTime": "2015-09-29 10:12:49 UTC",
+          "QuantityType": "Kilo",
+          "QuantityToPick": 1,
+          "QuantityPicked": 1
+      },
+    ]
+}
+
+
+------
+------ PICKWALK DATA OBJECTS
+------
+{
+    "StoreId":    "store_0001",
+    "PickwalkId":  "pickwalk_0001",
+    "PickerIds":   ["picker_0001"],
+    "StartClientTimestamp": "2015-09-29 10:11:59 UTC",
+    "EndClientTimestamp": "2015-09-29 10:11:59 UTC",
+    "PickwalkDurationInSeconds": "1234",
+    "PicksDurationInSeconds": "1234",
+    "IdleTimeInSeconds": "1234",
+    "_NamePartition": "20150929",
+    "_createdAt": "2015-09-29 10:11:59 UTC",
+    "Picks": [
+        {
+            "PickerId":   "picker_0001",
+            "layoutPositionId": "layout_position_0001",
+            "SkuId":      "sku_0001",
+            "Regime":     "AMBIENT",
+            "StartClientTimestamp": "2015-09-29 10:11:59 UTC",
+            "EndClientTimestamp": "2015-09-29 10:11:59 UTC",
+            "PickingDurationInSeconds": "1234",
+            "PickedItems": [
+              {
+                  "ContainerId": "container_0001",
+                  "ContainerPosition": "position_001",
+                  "ContainerType": "TRAY",
+                  "OrderId":     "order_0001",
+                  "RouteId":     "route_0001",
+                  "PickTime": "2015-09-29 10:12:49 UTC",
+                  "QuantityType": "Kilo",
+                  "QuantityToPick": 3,
+                  "QuantityPicked": 3
+              },
+              {
+                  "ContainerId": "container_0002",
+                  "ContainerPosition": "position_001",
+                  "ContainerType": "TRAY",
+                  "OrderId":     "order_0001",
+                  "RouteId":     "route_0001",
+                  "PickTime": "2015-09-29 10:12:49 UTC",
+                  "QuantityType": "Kilo",
+                  "QuantityToPick": 1,
+                  "QuantityPicked": 1
+              },
+              {
+                  "ContainerId":   "container_0003",
+                  "ContainerPosition": "position_001",
+                  "ContainerType": "TRAY",
+                  "OrderId":       "order_0002",
+                  "RouteId":       "route_0001",
+                  "PickTime": "2015-09-29 10:12:49 UTC",
+                  "QuantityType": "Kilo",
+                  "QuantityToPick": 2,
+                  "QuantityPicked": 2
+              },
+              {
+                  "ContainerId":   "container_0004",
+                  "ContainerPosition": "position_001",
+                  "ContainerType": "TRAY",
+                  "OrderId":       "order_0003",
+                  "RouteId":       "route_0002",
+                  "PickTime": "2015-09-29 10:12:49 UTC",
+                  "QuantityType": "Kilo",
+                  "QuantityToPick": 1,
+                  "QuantityPicked": 1
+              },
+            ]
+        }
+    ]
+}
+

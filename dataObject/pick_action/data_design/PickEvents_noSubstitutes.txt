@@ -1,0 +1,255 @@
+
+------
+------ EVENTS FOR PRODUCTS TO BE PICKED
+------
+{
+  "body": {
+    "StoreId":    "store_0001",
+    "PickwalkId":  "pickwalk_0001",
+    "PickerId":   "picker_0001",
+    "layoutPositionId": "layout_position_0001",
+    "SkuId":      "sku_0001",
+    "Regime":     "AMBIENT",
+    "ClientTimestamp": "2015-09-29 10:11:59 UTC",
+    "toPick": [
+      {
+          "ContainerId": "container_0001",
+          "ContainerPosition": "position_001",
+          "ContainerType": "TRAY",
+          "OrderId":     "order_0001",
+          "RouteId":     "route_0001",
+          "QuantityToPick": 3,
+          "QuantityType": "Kilo"
+      },
+      {
+          "ContainerId": "container_0001",
+          "ContainerPosition": "position_002",
+          "ContainerType": "TRAY",
+          "OrderId":     "order_0001",
+          "RouteId":     "route_0001",
+          "QuantityToPick": 1,
+          "QuantityType": "Kilo"
+      },
+      {
+          "ContainerId": "container_0002",
+          "ContainerPosition": "position_001",
+          "ContainerType": "TRAY",
+          "OrderId":     "order_0001",
+          "RouteId":     "route_0001",
+          "QuantityToPick": 1,
+          "QuantityType": "Kilo"
+      },
+      {
+          "ContainerId":   "container_0003",
+          "ContainerPosition": "position_001",
+          "ContainerType": "TRAY",
+          "OrderId":       "order_0002",
+          "RouteId":       "route_0001",
+          "QuantityToPick": 2,
+          "QuantityType": "Kilo"
+      },
+      {
+          "ContainerId":   "container_0004",
+          "ContainerPosition": "position_001",
+          "ContainerType": "TRAY",
+          "OrderId":       "order_0003",
+          "RouteId":       "route_0002",
+          "QuantityToPick": 1,
+          "QuantityType": "Kilo"
+      },
+    ]
+  },
+  "header": {
+    "version": "1.0",
+    "appId": "fulman",
+    "appVersion": "app_version_1.0.0",
+    "instanceId": "i-20dc688c",
+    "timestamp": "2015-09-29 10:11:59 UTC",
+    "eventId": "998745f3-f9a7-4a7c-aa29-6faa4f8284ee",
+    "eventGroup": "fulman",
+    "eventType": "productToPick",
+    "eventVersion": "1.0.0",
+    "availabilityZone": "eu-west-1b",
+    "requestId": "SwaggerFrontend-20021-92392-99941"
+  }
+}
+
+
+------
+------ EVENTS FOR PICKED PRODUCTS
+------
+--
+--
+---- pick events 1, 2 and 3 (same order different container and container position)
+{
+  "body": {
+    "StoreId":    "store_0001",
+    "PickerId":   "picker_0001",
+    "PickwalkId":  "pickwalk_0001",
+    "layoutPositionId": "layout_position_0001",
+    "SkuId":      "sku_0001",
+    "Regime":     "AMBIENT",
+    "ClientTimestamp": "2015-09-29 10:12:29 UTC",
+     "ContainerId": "container_0001",
+     "ContainerPosition": "position_001",
+     "ContainerType": "TRAY",
+     "OrderId":     "order_0001",
+     "RouteId":     "route_0001",
+     "QuantityPicked": 3,
+     "QuantityType": "Kilo"
+  },
+  "header": {
+    "version": "1.0",
+    "appId": "fulman",
+    "appVersion": "app_version_1.0.0",
+    "instanceId": "i-20dc688c",
+    "timestamp": "2015-09-29 10:12:29 UTC",
+    "eventId": "998745f3-f9a7-4a7c-aa29-6faa4f8284ee",
+    "eventGroup": "fulman",
+    "eventType": "productPicked",
+    "eventVersion": "1.0.0",
+    "availabilityZone": "eu-west-1b",
+    "requestId": "SwaggerFrontend-20021-92392-99941"
+  }
+}
+--
+--
+{
+  "body": {
+    "StoreId":    "store_0001",
+    "PickerId":   "picker_0001",
+    "PickwalkId":  "pickwalk_0001",
+    "layoutPositionId": "layout_position_0001",
+    "SkuId":      "sku_0001",
+    "Regime":     "AMBIENT",
+    "ClientTimestamp": "2015-09-29 10:12:29 UTC",
+     "ContainerId": "container_0001",
+     "ContainerPosition": "position_002",
+     "ContainerType": "TRAY",
+     "OrderId":     "order_0001",
+     "RouteId":     "route_0001",
+     "QuantityPicked": 1,
+     "QuantityType": "Kilo"
+  },
+  "header": {
+    "version": "1.0",
+    "appId": "fulman",
+    "appVersion": "app_version_1.0.0",
+    "instanceId": "i-20dc688c",
+    "timestamp": "2015-09-29 10:12:29 UTC",
+    "eventId": "998745f3-f9a7-4a7c-aa29-6faa4f8284ee",
+    "eventGroup": "fulman",
+    "eventType": "productPicked",
+    "eventVersion": "1.0.0",
+    "availabilityZone": "eu-west-1b",
+    "requestId": "SwaggerFrontend-20021-92392-99941"
+  }
+}
+--
+--
+{
+  "body": {
+    "StoreId":    "store_0001",
+    "PickerId":   "picker_0001",
+    "PickwalkId":  "pickwalk_0001",
+    "layoutPositionId": "layout_position_0001",
+    "SkuId":      "sku_0001",
+    "Regime":     "AMBIENT",
+    "ClientTimestamp": "2015-09-29 10:12:39 UTC",
+    "ContainerId": "container_0002",
+    "ContainerPosition": "position_001",
+    "ContainerType": "TRAY",
+    "OrderId":     "order_0001",
+    "RouteId":     "route_0001",
+    "QuantityPicked": 1,
+    "QuantityType": "Kilo"
+  },
+  "header": {
+    "version": "1.0",
+    "appId": "fulman",
+    "appVersion": "app_version_1.0.0",
+    "instanceId": "i-20dc688c",
+    "timestamp": "2015-09-29 10:12:39 UTC",
+    "eventId": "998745f3-f9a7-4a7c-aa29-6faa4f8284ee",
+    "eventGroup": "fulman",
+    "eventType": "productPicked",
+    "eventVersion": "1.0.0",
+    "availabilityZone": "eu-west-1b",
+    "requestId": "SwaggerFrontend-20021-92392-99941"
+  }
+}
+--
+--
+---- pick event 4 (same route as previous but different order)
+{
+  "body": {
+    "StoreId":    "store_0001",
+    "PickerId":   "picker_0001",
+    "PickwalkId":  "pickwalk_0001",
+    "layoutPositionId": "layout_position_0001",
+    "SkuId":      "sku_0001",
+    "Regime":     "AMBIENT",
+    "ClientTimestamp": "2015-09-29 10:12:49 UTC",
+    "ContainerId":   "container_0003",
+    "ContainerPosition": "position_001",
+    "ContainerType": "TRAY",
+    "OrderId":       "order_0002",
+    "RouteId":       "route_0001",
+    "QuantityPicked": 2,
+    "QuantityType": "Kilo"
+  },
+  "header": {
+    "version": "1.0",
+    "appId": "fulman",
+    "appVersion": "app_version_1.0.0",
+    "instanceId": "i-20dc688c",
+    "timestamp": "2015-09-29 10:12:49 UTC",
+    "eventId": "998745f3-f9a7-4a7c-aa29-6faa4f8284ee",
+    "eventGroup": "fulman",
+    "eventType": "productPicked",
+    "eventVersion": "1.0.0",
+    "availabilityZone": "eu-west-1b",
+    "requestId": "SwaggerFrontend-20021-92392-99941"
+  }
+}
+--
+--
+---- pick event 5 (different route from previous)
+{
+  "body": {
+    "StoreId":    "store_0001",
+    "PickerId":   "picker_0001",
+    "PickwalkId":  "pickwalk_0001",
+    "layoutPositionId": "layout_position_0001",
+    "SkuId":      "sku_0001",
+    "Regime":     "AMBIENT",
+    "ClientTimestamp": "2015-09-29 10:12:59 UTC",
+    "ContainerId":   "container_0004",
+    "ContainerPosition": "position_001",
+    "ContainerType": "TRAY",
+    "OrderId":       "order_0003",
+    "RouteId":       "route_0002",
+    "QuantityPicked": 1,
+    "QuantityType": "Kilo"
+    ]
+  },
+  "header": {
+    "version": "1.0",
+    "appId": "fulman",
+    "appVersion": "app_version_1.0.0",
+    "instanceId": "i-20dc688c",
+    "timestamp": "2015-09-29 10:12:59 UTC",
+    "eventId": "998745f3-f9a7-4a7c-aa29-6faa4f8284ee",
+    "eventGroup": "fulman",
+    "eventType": "productPicked",
+    "eventVersion": "1.0.0",
+    "availabilityZone": "eu-west-1b",
+    "requestId": "SwaggerFrontend-20021-92392-99941"
+  }
+}
+
+
+
+
+
+
