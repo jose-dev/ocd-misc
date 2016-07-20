@@ -9,16 +9,6 @@ class BasketReader(object):
                                            quantity_amount=1))
         return basket
 
-def prepare_backet(filename=None):
-    """
-    1- read file into dictionary
-    2- create objects:
-        - basket item
-        - basket
-    3- return basket object
-    """
-    pass
-
 
 class BasketItem(object):
     def __init__(self, sku=None, description=None, quantity_amount=0.0, quantity_type="each"):
