@@ -1,12 +1,21 @@
 import operator
+import json
+import pprint
 
-def prepare_recipe_book(filename=None):
-    """
-    1- read file
-    2- read line by line adding each entry to recipe book individually
-    3- return recipeBook object
-    """
-    pass
+class RecipeBookReader(object):
+    @staticmethod
+    def read(filename=None):
+        recipe_book = RecipeBook()
+        with open(filename, 'r') as f:
+            for line in f:
+                d = json.loads(line)
+                if "sku" in d:
+                    recipe_book.add_entry(sku=d["sku"],
+                                          sku_description=d["ingredient"],
+                                          weight=d["rarity_weight"],
+                                          recipe_id=d["document_no"],
+                                          recipe_name=d["title"])
+        return recipe_book
 
 
 class Ingredient(object):
