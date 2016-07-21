@@ -1,16 +1,16 @@
+import os
 import unittest
 from iChef.RecipeBook import RecipeBookReader
 from iChef.Sku import Sku, SkuItem
-import os
 
 
-class RecipeBookTest(unittest.TestCase):
+class RecipeBookReaderTest(unittest.TestCase):
     def setUp(self):
         filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'resources', 'recipe_book_reader.json')
         self._recipe_book = RecipeBookReader.read(filename)
 
 
-    def test_create_recipe_book(self):
+    def test_content_of_recipe_book(self):
         recipe_book = self._recipe_book
 
         self.assertEqual(len(recipe_book.list_ingredients()), 3)
@@ -98,5 +98,5 @@ class RecipeBookTest(unittest.TestCase):
         self.assertEqual(result[0].recipe_id, "recipe_002")
 
 if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(RecipeBookTest)
+    suite = unittest.TestLoader().loadTestsFromTestCase(RecipeBookReaderTest)
     unittest.TextTestRunner(verbosity=2).run(suite)
