@@ -111,12 +111,8 @@ class MatchedIngredient(object):
         self.recipe_sku = ingredient.sku
         self.weight = ingredient.weight
         self.recipe_id = recipe
-        if basket_sku:
-            self.set_basket_sku(basket_sku)
-
-    def set_basket_sku(self, sku=None):
-        self.basket_sku = sku
-        self.is_alternative = sku != self.recipe_sku
+        self.basket_sku = basket_sku
+        self.is_alternative = self.basket_sku != self.recipe_sku
 
 
 class RecipeMatchedIngredient(object):
