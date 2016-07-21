@@ -75,14 +75,14 @@ class RecipeBook(object):
     def has_recipe(self, recipe_id=None):
         return self.recipes.has_key(recipe_id)
 
-    def create_recipe(self, id=None, name=None):
-        self.recipes[id] = Recipe(id, name)
+    def add_recipe(self, recipe=None):
+        self.recipes[recipe.id] = recipe
 
     def add_entry(self,sku=None, sku_description=None, weight=0.0, recipe_id=None, recipe_name=None):
         if not self.has_ingredient(sku):
             self.add_ingredient(Ingredient(sku, sku_description))
         if not self.has_recipe(recipe_id):
-            self.create_recipe(recipe_id, recipe_name)
+            self.add_recipe(Recipe(recipe_id, recipe_name))
         self.add_recipe_ingredient(recipe_id, RecipeIngredient(sku, weight))
 
     def list_recipes(self):
@@ -145,7 +145,7 @@ class MatchedRecipeList(object):
 
     def add_matched_ingredient(self, ingredient=None):
         if not self.has_recipe(ingredient.recipe_id):
-            self.create_recipe(ingredient.recipe_id)
+            self.add_recipe(MatchedRecipe(ingredient.recipe_id))
         self.add_recipe_ingredient(ingredient.recipe_id, RecipeMatchedIngredient(ingredient))
 
     def add_matched_ingredients(self, ingredients=None):
@@ -155,8 +155,8 @@ class MatchedRecipeList(object):
     def has_recipe(self, recipe_id=None):
         return self.recipes.has_key(recipe_id)
 
-    def create_recipe(self, id=None):
-        self.recipes[id] = MatchedRecipe(id)
+    def add_recipe(self, recipe=None):
+        self.recipes[recipe.id] = recipe
 
     def add_recipe_ingredient(self, recipe_id=None, ingredient=None):
         self.recipes[recipe_id].add_ingredient(ingredient)
