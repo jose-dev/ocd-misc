@@ -1,0 +1,5 @@
+{"sku": "sku_001", "ingredient": "sku 1", "rarity_weight": 0.6, "document_no": "recipe_001", "title": "recipe 1"}
+{"sku": "sku_002", "ingredient": "sku 2", "rarity_weight": 0.4, "document_no": "recipe_001", "title": "recipe 1"}
+{"sku": "sku_001", "ingredient": "sku 1", "rarity_weight": 0.5, "document_no": "recipe_002", "title": "recipe 2"}
+{"sku": "sku_002", "ingredient": "sku 2", "rarity_weight": 0.4, "document_no": "recipe_002", "title": "recipe 2"}
+{"sku": "sku_003", "ingredient": "sku 3", "rarity_weight": 0.1, "document_no": "recipe_002", "title": "recipe 2"}

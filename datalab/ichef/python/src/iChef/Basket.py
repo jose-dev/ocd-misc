@@ -1,12 +1,13 @@
-def prepare_backet(filename=None):
-    """
-    1- read file into dictionary
-    2- create objects:
-        - basket item
-        - basket
-    3- return basket object
-    """
-    pass
+
+class BasketReader(object):
+    @staticmethod
+    def read(filename=None):
+        basket = Basket(description="test basket")
+        with open(filename, 'r') as f:
+            for line in f:
+                basket.add_item(BasketItem(sku=line.rstrip('\n'),
+                                           quantity_amount=1))
+        return basket
 
 
 class BasketItem(object):
