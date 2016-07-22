@@ -56,15 +56,18 @@ class RecipeBook(object):
     def __init__(self):
         self.recipes = {}
         self.ingredients = {}
+        self.recipe_ingredients = {}
 
     def has_ingredient(self, sku=None):
         return self.ingredients.has_key(sku)
 
     def add_ingredient(self, ingredient=None):
         self.ingredients[ingredient.sku] = ingredient
+        self.recipe_ingredients[ingredient.sku] = {}
 
     def add_recipe_ingredient(self, recipe_id=None, ingredient=None):
         self.recipes[recipe_id].add_ingredient(ingredient)
+        self.recipe_ingredients[ingredient.sku][recipe_id] = True
 
     def list_ingredients(self):
         return self.ingredients.keys()
@@ -88,19 +91,19 @@ class RecipeBook(object):
     def list_recipes(self):
         return self.recipes.keys()
 
-    def get_recipe(self, sku=None):
-        return self.recipes.get(sku, None)
+    def get_recipe(self, recipe_id=None):
+        return self.recipes.get(recipe_id, None)
 
     def find_recipe_with_sku(self, sku=None):
         matched = []
         for sku_item in sku.get_alternatives():
             if self.has_ingredient(sku_item.sku):
-                for recipe in self.recipes.values():
-                    if recipe.has_ingredient(sku_item.sku):
-                        recipe_ingredient = recipe.get_ingredient(sku_item.sku)
-                        matched.append(MatchedIngredient(ingredient=recipe_ingredient,
-                                                         recipe=recipe.id,
-                                                         basket_sku=sku.id))
+                for recipe_id in self.recipe_ingredients[sku_item.sku].keys():
+                    recipe = self.get_recipe(recipe_id)
+                    recipe_ingredient = recipe.get_ingredient(sku_item.sku)
+                    matched.append(MatchedIngredient(ingredient=recipe_ingredient,
+                                                     recipe=recipe.id,
+                                                     basket_sku=sku.id))
             if len(matched) > 0:
                 break
         return matched
