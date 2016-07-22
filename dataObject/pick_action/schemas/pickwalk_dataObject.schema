@@ -1,0 +1,147 @@
+[
+    {
+        "name": "StoreId",
+        "type": "STRING",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "PickwalkId",
+        "type": "STRING",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "PickerIds",
+        "type": "STRING",
+        "mode": "REPEATED"
+    },
+    {
+        "name": "StartClientTimestamp",
+        "type": "TIMESTAMP",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "EndClientTimestamp",
+        "type": "TIMESTAMP",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "PickwalkDurationInSeconds" ,
+        "type": "INTEGER",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "PicksDurationInSeconds" ,
+        "type": "INTEGER",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "IdleTimeInSeconds" ,
+        "type": "INTEGER",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "_NamePartition",
+        "type": "STRING",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "_createdAt",
+        "type": "TIMESTAMP",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "Picks",
+        "mode": "REPEATED",
+        "type": "RECORD",
+        "fields": [
+            {
+                "name": "PickerId",
+                "type": "STRING",
+                "mode": "NULLABLE"
+            },
+            {
+                "name": "layoutPositionId",
+                "type": "STRING",
+                "mode": "NULLABLE"
+            },
+            {
+                "name": "SkuId",
+                "type": "STRING",
+                "mode": "NULLABLE"
+            },
+            {
+                "name": "Regime",
+                "type": "STRING",
+                "mode": "NULLABLE"
+            },
+            {
+                "name": "StartClientTimestamp",
+                "type": "TIMESTAMP",
+                "mode": "NULLABLE"
+            },
+            {
+                "name": "EndClientTimestamp",
+                "type": "TIMESTAMP",
+                "mode": "NULLABLE"
+            },
+            {
+                "name": "PickingDurationInSeconds" ,
+                "type": "INTEGER",
+                "mode": "NULLABLE"
+            },
+            {
+                "name": "PickedItems",
+                "mode": "REPEATED",
+                "type": "RECORD",
+                "fields": [
+                    {
+                        "name": "ContainerId",
+                        "mode": "NULLABLE",
+                        "type": "STRING"
+                    },
+                    {
+                        "name": "ContainerPosition",
+                        "mode": "NULLABLE",
+                        "type": "STRING"
+                    },
+                    {
+                        "name": "ContainerType",
+                        "mode": "NULLABLE",
+                        "type": "STRING"
+                    },
+                    {
+                        "name": "OrderId",
+                        "mode": "NULLABLE",
+                        "type": "STRING"
+                    },
+                    {
+                        "name": "RouteId",
+                        "mode": "NULLABLE",
+                        "type": "STRING"
+                    },
+                    {
+                        "name": "PickTime",
+                        "mode": "NULLABLE",
+                        "type": "TIMESTAMP"
+                    },
+                    {
+                        "name": "QuantityType",
+                        "mode": "NULLABLE",
+                        "type": "STRING"
+                    },
+                    {
+                        "name": "QuantityToPick",
+                        "mode": "NULLABLE",
+                        "type": "FLOAT"
+                    },
+                    {
+                        "name": "QuantityPicked",
+                        "mode": "NULLABLE",
+                        "type": "FLOAT"
+                    }
+                ]
+            }
+        ]
+    }
+]
+
