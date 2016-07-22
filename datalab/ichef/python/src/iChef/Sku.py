@@ -1,13 +1,24 @@
+import json
 
-def prepare_sku(filename=None):
-    """
-    1- read file into dictionary
-    2- create objects:
-        - sku as a list of alternatives with main sku at top
-        - sku catalogue
-    3- return sku catalogue object
-    """
-    pass
+class SkuCatalogueReader(object):
+    @staticmethod
+    def read(filename=None):
+        colnames = ["recipe_sku", "other_relevant_skus"]
+        col_pair = [sorted(colnames), sorted(colnames, reverse=True)]
+
+        skus = {}
+        with open(filename, 'r') as f:
+            for line in f:
+                d = json.loads(line)
+                for cols in col_pair:
+                    if d[cols[0]] not in skus:
+                        skus[d[cols[0]]] = Sku(id=d[cols[0]])
+                    skus[d[cols[0]]].add_alternative(SkuItem(sku=d[cols[1]]))
+
+        sku_catalogue = SkuCatalogue()
+        for sku_id in skus.keys():
+            sku_catalogue.add_sku(skus[sku_id])
+        return sku_catalogue
 
 
 class SkuItem(object):
