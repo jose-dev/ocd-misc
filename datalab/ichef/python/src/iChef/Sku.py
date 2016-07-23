@@ -11,6 +11,8 @@ class SkuCatalogueReader(object):
             for line in f:
                 d = json.loads(line)
                 for cols in col_pair:
+                    if cols[0] not in d or cols[1] not in d:
+                        continue
                     if d[cols[0]] not in skus:
                         skus[d[cols[0]]] = Sku(id=d[cols[0]])
                     skus[d[cols[0]]].add_alternative(SkuItem(sku=d[cols[1]]))
