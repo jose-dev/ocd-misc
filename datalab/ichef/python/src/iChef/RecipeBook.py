@@ -140,7 +140,8 @@ class MatchedRecipe(Recipe):
 class MatchedRecipeList(object):
     def __init__(self, matched_ingredients=None):
         self.recipes = {}
-        self.add_matched_ingredients(matched_ingredients)
+        if matched_ingredients:
+            self.add_matched_ingredients(matched_ingredients)
 
     def add_matched_ingredient(self, ingredient=None):
         if not self.has_recipe(ingredient.recipe_id):
