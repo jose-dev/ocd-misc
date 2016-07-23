@@ -38,9 +38,9 @@ def main():
     sku_catalogue_filename = cmdargs['sku_catalogue']
 
     logging.info("Reading Data...")
-    o_recipe_book   = RecipeBookReader.read(recipe_book_filename)
     o_basket        = BasketReader.read(basket_filename)
     o_sku_catalogue = SkuCatalogueReader.read(sku_catalogue_filename)
+    o_recipe_book   = RecipeBookReader.read(recipe_book_filename)
 
     """
     pprint.pprint(o_recipe_book.get_recipe("1000421").__dict__)
