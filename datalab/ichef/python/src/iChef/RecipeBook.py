@@ -52,7 +52,7 @@ class Recipe(object):
         return self.ingredients.get(sku, None)
 
 
-class RecipeBook(object):
+class _RecipeBookBase(object):
     def __init__(self):
         self.recipes = {}
         self.ingredients = {}
@@ -107,6 +107,10 @@ class RecipeBook(object):
             if len(matched) > 0:
                 break
         return matched
+
+
+class RecipeBook(_RecipeBookBase):
+    pass
 
 
 class MatchedIngredient(object):
