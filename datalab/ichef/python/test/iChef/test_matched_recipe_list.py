@@ -13,8 +13,7 @@ class MatchedRecipeListTest(unittest.TestCase):
                                                  recipe="recipe_002",
                                                  basket_sku="sku_003")]
         matched_recipe_list = MatchedRecipeList()
-        for matched_ingredient in matched_ingredients:
-            matched_recipe_list.add_entry(matched_ingredient)
+        matched_recipe_list.add_entries(matched_ingredients)
         self._matched_recipe_list = matched_recipe_list
 
     def test_create_matched_recipe_list(self):

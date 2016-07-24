@@ -81,6 +81,21 @@ class _RecipeBookBase(object):
     def add_recipe(self, recipe=None):
         self.recipes[recipe.recipe_id] = recipe
 
+    def list_recipes(self):
+        return self.recipes.keys()
+
+    def get_recipe(self, recipe_id=None):
+        return self.recipes.get(recipe_id, None)
+
+    def add_entries(self, entries=None):
+        for entry in entries:
+            self.add_entry(entry)
+
+    def add_entry(self):
+        raise (NotImplementedError)
+
+
+class RecipeBook(_RecipeBookBase):
     def add_entry(self,sku=None, sku_description=None, weight=0.0, recipe_id=None, recipe_name=None):
         if not self.has_ingredient(sku):
             self.add_ingredient(Ingredient(sku, sku_description))
@@ -88,14 +103,6 @@ class _RecipeBookBase(object):
             self.add_recipe(Recipe(recipe_id, recipe_name))
         self.add_recipe_ingredient(recipe_id, RecipeIngredient(sku, weight))
 
-    def list_recipes(self):
-        return self.recipes.keys()
-
-    def get_recipe(self, recipe_id=None):
-        return self.recipes.get(recipe_id, None)
-
-
-class RecipeBook(_RecipeBookBase):
     def find_recipe_with_sku(self, sku=None):
         matched = []
         for sku_item in sku.get_alternatives():
@@ -159,16 +166,16 @@ class MatchedRecipeList(_RecipeBookBase):
         return sorted(d.items(), key=operator.itemgetter(1), reverse=True)
 
     def filter_recipes_by_score(self, cutoff=0.5):
-        matched_recipe_list = MatchedRecipeList()
+        selected_recipe_list = MatchedRecipeList()
         for recipe_pairs in self.sort_recipes_by_score(cutoff):
             recipe_id = recipe_pairs[0]
             for sku_id in self.get_recipe(recipe_id).list_ingredients():
                 ingredient = self.get_recipe(recipe_id).get_ingredient(sku_id)
-                matched_recipe_list.add_entry(MatchedIngredient(ingredient=RecipeIngredient(sku=ingredient.recipe_sku,
-                                                                                            weight=ingredient.weight),
+                selected_recipe_list.add_entry(MatchedIngredient(ingredient=RecipeIngredient(sku=ingredient.recipe_sku,
+                                                                                             weight=ingredient.weight),
                                                                 basket_sku=ingredient.basket_sku,
                                                                 recipe=recipe_id))
-        return matched_recipe_list
+        return selected_recipe_list
 
 
 

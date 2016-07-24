@@ -50,15 +50,15 @@ def main():
             sku = o_sku_catalogue.get_sku(sku_id)
             matched = o_recipe_book.find_recipe_with_sku(sku)
             if len(matched) > 0:
-                matched_recipe_list.add_matched_ingredients(matched)
+                matched_recipe_list.add_entries(matched)
 
     logging.info("Selecting predictions for given score...")
-    selected_recipes = matched_recipe_list.filter_recipes_by_score(score)
+    selected_recipe_list = matched_recipe_list.filter_recipes_by_score(score)
 
     logging.info("Printing predicted recipes...")
     print('\n')
     print('\t'.join(['RECIPE ID', 'SCORE', 'RECIPE NAME']))
-    for selected_recipe in selected_recipes:
+    for selected_recipe in selected_recipe_list.sort_recipes_by_score():
         print('\t'.join([selected_recipe[0],
                          str(selected_recipe[1]),
                          o_recipe_book.get_recipe(selected_recipe[0]).name]))
