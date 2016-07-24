@@ -2,7 +2,7 @@ import os
 import argparse
 import logging
 import pprint
-from iChef.RecipeBook import RecipeBookReader
+from iChef.RecipeBook import RecipeBookReader, MatchedRecipeList
 from iChef.Basket import BasketReader
 from iChef.Sku import SkuCatalogueReader
 
@@ -21,7 +21,7 @@ def arg_parser():
     parser.add_argument('-c', '--sku_catalogue', type=str,   help='File with sku catalogue. Default: {}'.format(SKU_CATALOGUE_FILENAME), default=SKU_CATALOGUE_FILENAME)
     parser.add_argument('-s', '--score',         type=float, help='Minimum recipe score.    Default: {}'.format(str(DEFAULT_SCORE)),     default=DEFAULT_SCORE)
     parser.add_argument('-b', '--basket',      required=True, type=str, help='Input basket file')
-    parser.add_argument('-o', '--output_file', required=True, type=str, help='Name of output file')
+    #parser.add_argument('-o', '--output_file', required=True, type=str, help='Name of output file')
 
     args = parser.parse_args()
     return vars(args)
@@ -36,19 +36,33 @@ def main():
     recipe_book_filename = cmdargs['recipe_book']
     basket_filename = cmdargs['basket']
     sku_catalogue_filename = cmdargs['sku_catalogue']
+    score = cmdargs['score']
 
     logging.info("Reading Data...")
     o_basket        = BasketReader.read(basket_filename)
     o_sku_catalogue = SkuCatalogueReader.read(sku_catalogue_filename)
     o_recipe_book   = RecipeBookReader.read(recipe_book_filename)
 
-    """
-    pprint.pprint(o_recipe_book.get_recipe("1000421").__dict__)
-    pprint.pprint(o_basket.get_item("12074011").__dict__)
-    pprint.pprint(o_sku_catalogue.get_sku("12074011").__dict__)
-    """
-
     logging.info("Running predictions...")
+    matched_recipe_list = MatchedRecipeList()
+    for sku_id in o_basket.list_items():
+        if o_sku_catalogue.has_sku(sku_id):
+            sku = o_sku_catalogue.get_sku(sku_id)
+            matched = o_recipe_book.find_recipe_with_sku(sku)
+            if len(matched) > 0:
+                matched_recipe_list.add_matched_ingredients(matched)
+
+    logging.info("Selecting predictions for given score...")
+    selected_recipes = matched_recipe_list.filter_recipes_by_score(score)
+
+    logging.info("Printing predicted recipes...")
+    print('\n')
+    print('\t'.join(['RECIPE ID', 'SCORE', 'RECIPE NAME']))
+    for selected_recipe in selected_recipes:
+        print('\t'.join([selected_recipe[0],
+                         str(selected_recipe[1]),
+                         o_recipe_book.get_recipe(selected_recipe[0]).name]))
+    print('\n')
 
 
     logging.info("All done")
