@@ -11,11 +11,14 @@ class MatchedRecipeListTest(unittest.TestCase):
                                                  basket_sku="sku_002"),
                                MatchedIngredient(ingredient=RecipeIngredient(sku="sku_001", weight=0.2),
                                                  recipe="recipe_002",
-                                                 basket_sku="sku_001")]
-        self._matched_ingredients = matched_ingredients
+                                                 basket_sku="sku_003")]
+        matched_recipe_list = MatchedRecipeList()
+        for matched_ingredient in matched_ingredients:
+            matched_recipe_list.add_entry(matched_ingredient)
+        self._matched_recipe_list = matched_recipe_list
 
     def test_create_matched_recipe_list(self):
-        matched_recipe_list = MatchedRecipeList(self._matched_ingredients)
+        matched_recipe_list = self._matched_recipe_list
 
         self.assertEqual(len(matched_recipe_list.list_recipes()), 2)
         self.assertEqual(matched_recipe_list.has_recipe("recipe_001"), True)
@@ -25,15 +28,15 @@ class MatchedRecipeListTest(unittest.TestCase):
         self.assertEqual(matched_recipe_list.get_recipe("recipe_002").score, 0.2)
 
     def test_filter_matched_recipes_returns_empty_list(self):
-        matched_recipe_list = MatchedRecipeList(self._matched_ingredients)
+        matched_recipe_list = self._matched_recipe_list
         self.assertItemsEqual(matched_recipe_list.filter_recipes_by_score(0.8), [])
 
     def test_filter_matched_recipes_returns_only_one(self):
-        matched_recipe_list = MatchedRecipeList(self._matched_ingredients)
+        matched_recipe_list = self._matched_recipe_list
         self.assertItemsEqual(matched_recipe_list.filter_recipes_by_score(), [("recipe_001", 0.7)])
 
     def test_filter_matched_recipes_returns_several_ordered_entries(self):
-        matched_recipe_list = MatchedRecipeList(self._matched_ingredients)
+        matched_recipe_list = self._matched_recipe_list
         result = matched_recipe_list.filter_recipes_by_score(0.1)
         self.assertEqual(len(result), 2)
         self.assertItemsEqual(result[0], ("recipe_001", 0.7))

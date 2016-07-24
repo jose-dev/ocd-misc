@@ -139,35 +139,17 @@ class MatchedRecipe(Recipe):
         self.update_score(ingredient.weight)
 
 
-class MatchedRecipeList(object):
-    def __init__(self, matched_ingredients=None):
-        self.recipes = {}
-        if matched_ingredients:
-            self.add_matched_ingredients(matched_ingredients)
-
-    def add_matched_ingredient(self, ingredient=None):
+class MatchedRecipeList(_RecipeBookBase):
+    def add_entry(self, ingredient=None):
+        if not self.has_ingredient(ingredient.basket_sku):
+            self.add_ingredient(Ingredient(ingredient.basket_sku))
         if not self.has_recipe(ingredient.recipe_id):
             self.add_recipe(MatchedRecipe(ingredient.recipe_id))
         self.add_recipe_ingredient(ingredient.recipe_id, RecipeMatchedIngredient(ingredient))
 
-    def add_matched_ingredients(self, ingredients=None):
-        for ingredient in ingredients:
-            self.add_matched_ingredient(ingredient)
-
-    def has_recipe(self, recipe_id=None):
-        return self.recipes.has_key(recipe_id)
-
-    def add_recipe(self, recipe=None):
-        self.recipes[recipe.recipe_id] = recipe
-
     def add_recipe_ingredient(self, recipe_id=None, ingredient=None):
         self.recipes[recipe_id].add_ingredient(ingredient)
-
-    def list_recipes(self):
-        return self.recipes.keys()
-
-    def get_recipe(self, recipe_id=None):
-        return self.recipes.get(recipe_id, None)
+        self.recipe_ingredients[ingredient.basket_sku][recipe_id] = True
 
     def get_recipe_score(self, recipe_id=None):
         return self.get_recipe(recipe_id).score
