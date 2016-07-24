@@ -20,8 +20,9 @@ def arg_parser():
     parser.add_argument('-r', '--recipe_book',   type=str,   help='File with recipe book.   Default: {}'.format(RECIPE_BOOK_FILENAME),   default=RECIPE_BOOK_FILENAME)
     parser.add_argument('-c', '--sku_catalogue', type=str,   help='File with sku catalogue. Default: {}'.format(SKU_CATALOGUE_FILENAME), default=SKU_CATALOGUE_FILENAME)
     parser.add_argument('-s', '--score',         type=float, help='Minimum recipe score.    Default: {}'.format(str(DEFAULT_SCORE)),     default=DEFAULT_SCORE)
-    parser.add_argument('-b', '--basket',      required=True, type=str, help='Input basket file')
+    parser.add_argument('-b', '--basket',        required=True, type=str, help='Input basket file')
     #parser.add_argument('-o', '--output_file', required=True, type=str, help='Name of output file')
+    parser.add_argument('-k', '--skip_basket',  action='store_true', help='Input basket file. Default: FALSE', default=False)
 
     args = parser.parse_args()
     return vars(args)
@@ -37,6 +38,7 @@ def main():
     basket_filename = cmdargs['basket']
     sku_catalogue_filename = cmdargs['sku_catalogue']
     score = cmdargs['score']
+    skip_basket = cmdargs['skip_basket']
 
     logging.info("Reading Data...")
     o_basket        = BasketReader.read(basket_filename)
@@ -63,6 +65,22 @@ def main():
                          str(selected_recipe[1]),
                          o_recipe_book.get_recipe(selected_recipe[0]).name]))
     print('\n')
+
+    if not skip_basket:
+        logging.info("Printing basket...")
+        print('\n')
+        print('\t'.join(['SKU ID', 'RECIPE IDS', 'SKU NAME']))
+        for sku_id in o_basket.list_items():
+            recipe_ids = "no_recipe"
+            sku_name   = "no description"
+            if selected_recipe_list.has_ingredient(sku_id):
+                recipe_ids = ','.join(selected_recipe_list.get_recipe_ingredient(sku_id))
+            if o_recipe_book.has_ingredient(sku_id):
+                sku_name   = o_recipe_book.get_ingredient(sku_id).description
+            print('\t'.join([sku_id,
+                             recipe_ids,
+                             sku_name]))
+        print('\n')
 
 
     logging.info("All done")

@@ -87,6 +87,12 @@ class _RecipeBookBase(object):
     def get_recipe(self, recipe_id=None):
         return self.recipes.get(recipe_id, None)
 
+    def list_recipe_ingredients(self):
+        return self.recipe_ingredients.keys()
+
+    def get_recipe_ingredient(self, sku_id=None):
+        return self.recipe_ingredients.get(sku_id, None)
+
     def add_entries(self, entries=None):
         for entry in entries:
             self.add_entry(entry)
@@ -142,8 +148,9 @@ class MatchedRecipe(Recipe):
         self.score += weight
 
     def add_ingredient(self, ingredient=None):
-        self.ingredients[ingredient.recipe_sku] = ingredient
-        self.update_score(ingredient.weight)
+        if ingredient.recipe_sku not in self.ingredients:
+            self.ingredients[ingredient.recipe_sku] = ingredient
+            self.update_score(ingredient.weight)
 
 
 class MatchedRecipeList(_RecipeBookBase):
