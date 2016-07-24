@@ -13,7 +13,7 @@ class MatchedRecipeTest(unittest.TestCase):
         matched_recipe = MatchedRecipe(id="recipe_001")
         matched_recipe.add_ingredients(recipe_matched_ingredients)
 
-        self.assertEqual(matched_recipe.id, "recipe_001")
+        self.assertEqual(matched_recipe.recipe_id, "recipe_001")
         self.assertEqual(matched_recipe.name, None)
         self.assertEqual(len(matched_recipe.list_ingredients()), 2)
         self.assertEqual(matched_recipe.has_ingredient("sku_001"), True)

@@ -31,9 +31,9 @@ class RecipeBookReaderTest(unittest.TestCase):
         self.assertEqual(recipe_book.has_recipe("recipe_002"), True)
         self.assertEqual(recipe_book.has_recipe("recipe_003"), False)
 
-        self.assertEqual(recipe_book.get_recipe("recipe_001").id, "recipe_001")
+        self.assertEqual(recipe_book.get_recipe("recipe_001").recipe_id, "recipe_001")
         self.assertEqual(len(recipe_book.get_recipe("recipe_001").list_ingredients()), 2)
-        self.assertEqual(recipe_book.get_recipe("recipe_002").id, "recipe_002")
+        self.assertEqual(recipe_book.get_recipe("recipe_002").recipe_id, "recipe_002")
         self.assertEqual(len(recipe_book.get_recipe("recipe_002").list_ingredients()), 3)
 
 
