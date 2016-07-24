@@ -94,6 +94,8 @@ class _RecipeBookBase(object):
     def get_recipe(self, recipe_id=None):
         return self.recipes.get(recipe_id, None)
 
+
+class RecipeBook(_RecipeBookBase):
     def find_recipe_with_sku(self, sku=None):
         matched = []
         for sku_item in sku.get_alternatives():
@@ -107,10 +109,6 @@ class _RecipeBookBase(object):
             if len(matched) > 0:
                 break
         return matched
-
-
-class RecipeBook(_RecipeBookBase):
-    pass
 
 
 class MatchedIngredient(object):
