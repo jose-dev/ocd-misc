@@ -31,7 +31,7 @@ class RecipeIngredient(object):
 
 class Recipe(object):
     def __init__(self, id=None, name=None):
-        self.id = id
+        self.recipe_id = id
         self.name = name
         self.ingredients = {}
 
@@ -79,7 +79,7 @@ class _RecipeBookBase(object):
         return self.recipes.has_key(recipe_id)
 
     def add_recipe(self, recipe=None):
-        self.recipes[recipe.id] = recipe
+        self.recipes[recipe.recipe_id] = recipe
 
     def add_entry(self,sku=None, sku_description=None, weight=0.0, recipe_id=None, recipe_name=None):
         if not self.has_ingredient(sku):
@@ -102,7 +102,7 @@ class _RecipeBookBase(object):
                     recipe = self.get_recipe(recipe_id)
                     recipe_ingredient = recipe.get_ingredient(sku_item.sku)
                     matched.append(MatchedIngredient(ingredient=recipe_ingredient,
-                                                     recipe=recipe.id,
+                                                     recipe=recipe.recipe_id,
                                                      basket_sku=sku.id))
             if len(matched) > 0:
                 break
@@ -160,7 +160,7 @@ class MatchedRecipeList(object):
         return self.recipes.has_key(recipe_id)
 
     def add_recipe(self, recipe=None):
-        self.recipes[recipe.id] = recipe
+        self.recipes[recipe.recipe_id] = recipe
 
     def add_recipe_ingredient(self, recipe_id=None, ingredient=None):
         self.recipes[recipe_id].add_ingredient(ingredient)

@@ -7,8 +7,9 @@ class RecipeTest(unittest.TestCase):
         recipe.add_ingredient(RecipeIngredient(sku="sku_001", weight=0.6))
         recipe.add_ingredient(RecipeIngredient(sku="sku_002", weight=0.4))
 
-        self.assertEqual(recipe.id, "recipe_001")
+        self.assertEqual(recipe.recipe_id, "recipe_001")
         self.assertEqual(recipe.name, "test recipe")
+        self.assertEqual(len(recipe.list_ingredients()), 2)
         self.assertEqual(len(recipe.list_ingredients()), 2)
         self.assertEqual(recipe.has_ingredient("sku_001"), True)
         self.assertEqual(recipe.has_ingredient("sku_002"), True)
