@@ -154,12 +154,26 @@ class MatchedRecipeList(_RecipeBookBase):
     def get_recipe_score(self, recipe_id=None):
         return self.get_recipe(recipe_id).score
 
-    def sort_recipes_by_score(self, score=0.0):
-        d = {k: self.get_recipe_score(k) for k in self.list_recipes() if self.get_recipe_score(k) >= score}
+    def sort_recipes_by_score(self, cutoff=0.0):
+        d = {k: self.get_recipe_score(k) for k in self.list_recipes() if self.get_recipe_score(k) >= cutoff}
         return sorted(d.items(), key=operator.itemgetter(1), reverse=True)
 
-    def filter_recipes_by_score(self, score=0.5):
-        return self.sort_recipes_by_score(score)
+    def filter_recipes_by_score(self, cutoff=0.5):
+        matched_recipe_list = MatchedRecipeList()
+        for recipe_pairs in self.sort_recipes_by_score(cutoff):
+            recipe_id = recipe_pairs[0]
+            for sku_id in self.get_recipe(recipe_id).list_ingredients():
+                ingredient = self.get_recipe(recipe_id).get_ingredient(sku_id)
+                matched_recipe_list.add_entry(MatchedIngredient(ingredient=RecipeIngredient(sku=ingredient.recipe_sku,
+                                                                                            weight=ingredient.weight),
+                                                                basket_sku=ingredient.basket_sku,
+                                                                recipe=recipe_id))
+        return matched_recipe_list
+
+
+
+
+
 
 
 
