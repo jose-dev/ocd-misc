@@ -6,6 +6,7 @@ import json
 import logging
 import pickwalk_do as opw
 import pickwalk_random_generators as prg
+from random import shuffle
 
 
 CATALOGUE_SIZE = 1000
@@ -29,6 +30,10 @@ def arg_parser():
 
 ################################################################################
 
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(levelname)s -- %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S')
+
 
 def main():
     
@@ -44,18 +49,24 @@ def main():
     logging.info("Running modelling...")
     pickwalk_objects = []
     store_id = prg.random_string()
+    devices = opw.define_devices(n=number_pickers)
     pickers = opw.define_pickers(number_pickers)
     catalogue = opw.define_catalogue(catalogue_size)
+    device_indexes = range(0, len(devices))
     for day_delta in reversed(range(0, number_days)):
         start_time = datetime.today() - timedelta(days=day_delta)
         routes = opw.define_routes()
         orders = opw.define_orders(routes=routes)
 
+        shuffle(device_indexes)
+        index = 0
         for picker_id in pickers.keys():
+            device = devices[device_indexes[index]]
             pickwalk_id = prg.random_string()
             delay = pickers[picker_id]
             trolley = opw.define_trolley(orders)
             pickwalk_objects.append(opw.generate_pickwalk_object(delay=delay,
+                                                                 device=device,
                                                                  no_objects=number_picks,
                                                                  store_id=store_id,
                                                                  pickwalk_id=pickwalk_id,
@@ -63,6 +74,7 @@ def main():
                                                                  trolley=trolley,
                                                                  catalogue=catalogue,
                                                                  start_time=copy.deepcopy(start_time) + timedelta(minutes=prg.random_integer(60))))
+            index += 1
 
     logging.info("Printing output...")
     #pprint.pprint(pickwalk_objects)
