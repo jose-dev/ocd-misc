@@ -18,8 +18,8 @@ class SqlManager(object):
     @classmethod
     def _prepare_sql(cls, basesql=None):
         sql = cls._remove_sql_comments(basesql=basesql)
-        return cls._format_sql(basesql=sql)
-
+        #return cls._format_sql(basesql=sql)
+        return sql
 
     @staticmethod
     def read_raw(filein=None):
