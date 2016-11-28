@@ -1,0 +1,31 @@
+{
+    "fields": [
+  {
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "name": "id"
+  },
+  {
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "name": "waterUsed"
+  },
+  {
+    "type": "STRING",
+    "name": "botId",
+    "mode": "REQUIRED"
+  },
+  {
+    "fields": [
+      {
+        "type": "TIMESTAMP",
+        "name": "timestamp",
+        "mode": "NULLABLE"
+      }
+    ],
+    "type": "RECORD",
+    "name": "header",
+    "mode": "NULLABLE"
+  }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+    "fields": [
+  {
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "name": "id"
+  },
+  {
+    "type": "INTEGER",
+    "mode": "REQUIRED",
+    "name": "oldX"
+  },
+  {
+    "type": "INTEGER",
+    "name": "oldY",
+    "mode": "REQUIRED"
+  },
+  {
+    "type": "INTEGER",
+    "name": "x",
+    "mode": "REQUIRED"
+  },
+  {
+    "type": "INTEGER",
+    "name": "y",
+    "mode": "REQUIRED"
+  },
+  {
+    "fields": [
+      {
+        "type": "TIMESTAMP",
+        "name": "timestamp",
+        "mode": "NULLABLE"
+      }
+    ],
+    "type": "RECORD",
+    "name": "header",
+    "mode": "NULLABLE"
+  }
+  ]
+}

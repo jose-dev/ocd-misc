@@ -1,0 +1,12 @@
+com/ocado/de/osp/carrots/GenerateData.class
+com/ocado/de/osp/carrots/Event.class
+com/ocado/de/osp/carrots/Soil.class
+com/ocado/de/osp/carrots/CarrotsModule.class
+com/ocado/de/osp/carrots/Field.class
+com/ocado/de/osp/carrots/Spot.class
+com/ocado/de/osp/carrots/EventSink$DateTimeSerializer.class
+com/ocado/de/osp/carrots/CarrotsModule$1.class
+com/ocado/de/osp/carrots/Carrot.class
+com/ocado/de/osp/carrots/EventSink.class
+com/ocado/de/osp/carrots/Bot.class
+com/ocado/de/osp/carrots/Carrot$Type.class
