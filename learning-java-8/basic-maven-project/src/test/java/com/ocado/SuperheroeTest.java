@@ -18,18 +18,22 @@ public class SuperheroeTest {
         Superheroe p = new Superheroe(firstName, lastName);
         Assert.assertEquals(p.getFirstName(), firstName);
         Assert.assertEquals(p.getLastName(), lastName);
+        Assert.assertEquals(p.getCodename(), "unknown");
         Assert.assertEquals(p.getPowers(), new ArrayList<String>());
+        Assert.assertEquals(p.toString(), "unknown has these powers: [None]");
     }
 
     @Test()
     public void testConstructorWithPowers() {
         String firstName = "Pepe";
         String lastName = "Grillo";
+        String codename = "Supermeh";
         List<String> powers = new ArrayList<String>(Arrays.asList("flight", "x-vision"));
-        Superheroe p = new Superheroe(firstName, lastName, powers);
+        Superheroe p = new Superheroe(firstName, lastName).withCodename(codename).withPowers(powers);
         Assert.assertEquals(p.getFirstName(), firstName);
         Assert.assertEquals(p.getLastName(), lastName);
         Assert.assertEquals(p.getPowers(), powers);
+        Assert.assertEquals(p.getCodename(), codename);
     }
 
     @Test()
@@ -40,5 +44,18 @@ public class SuperheroeTest {
         Assert.assertEquals(p.getPowers(), new ArrayList<String>());
         p.addPower("flight");
         Assert.assertEquals(p.getPowers(), new ArrayList<String>(Arrays.asList("flight")));
+        Assert.assertEquals(p.toString(), "unknown has these powers: [flight]");
+    }
+
+    @Test()
+    public void testAddPowers() {
+        String firstName = "Pepe";
+        String lastName = "Grillo";
+        List<String> powers = new ArrayList<String>(Arrays.asList("flight", "x-vision"));
+        Superheroe p = new Superheroe(firstName, lastName);
+        Assert.assertEquals(p.getPowers(), new ArrayList<String>());
+        p.addPowers(powers);
+        Assert.assertEquals(p.getPowers(), powers);
+        Assert.assertEquals(p.toString(), "unknown has these powers: [flight, x-vision]");
     }
 }
