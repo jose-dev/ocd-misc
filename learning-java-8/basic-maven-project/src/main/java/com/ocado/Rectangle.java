@@ -3,7 +3,7 @@ package com.ocado;
 /**
  * Created by jose on 07/12/16.
  */
-public class Rectangle {
+public class Rectangle extends Shape {
     private double x;
     private double y;
 
