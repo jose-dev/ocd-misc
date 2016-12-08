@@ -10,15 +10,17 @@ public interface Sale {
 
     double getFinalCost();
 
-    static double cheapest(List<Sale> sales) {
-        Double c = Double.NaN;
+    static Sale cheapest(List<Sale> sales) {
+        Sale cheapest = null;
+        Double c = Double.MAX_VALUE;
         for (Sale s: sales) {
             Double cost = s.getFinalCost();
-            if (c.isNaN() || c > cost) {
+            if (c > cost) {
+                cheapest = s;
                 c = cost;
             }
         }
-        return c;
+        return cheapest;
     }
 
     static double totalCost(List<Sale> sales) {

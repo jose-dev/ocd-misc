@@ -14,20 +14,20 @@ public class SaleTest {
     @Test()
     public void testCheapestWithNoSales() {
         List<Sale> s = new ArrayList<>();
-        Assert.assertEquals(Sale.cheapest(s), Double.NaN);
+        Assert.assertEquals(Sale.cheapest(s), null);
     }
 
     @Test()
     public void testCheapestWithSingleSale() {
         List<Sale> s = new ArrayList<>(Arrays.asList(new CarSale("seat", 10.0, 0.0)));
-        Assert.assertEquals(Sale.cheapest(s), 10.0);
+        Assert.assertEquals(Sale.cheapest(s).getFinalCost(), 10.0);
     }
 
     @Test()
     public void testCheapestWithMultipleSales() {
         List<Sale> s = new ArrayList<>(Arrays.asList(new CarSale("seat", 10.0, 0.0),
                 new PaperclipSale("red", 1000, 1.0)));
-        Assert.assertEquals(Sale.cheapest(s), 10.0);
+        Assert.assertEquals(Sale.cheapest(s).getFinalCost(), 10.0);
     }
 
     @Test
