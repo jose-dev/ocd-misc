@@ -19,14 +19,14 @@ public class SaleTest {
 
     @Test()
     public void testCheapestWithSingleSale() {
-        List<Sale> s = new ArrayList<>(Arrays.asList(new CarSale("seat", 10.0, 0.0)));
+        List<Sale> s = Arrays.asList(new CarSale("seat", 10.0, 0.0));
         Assert.assertEquals(Sale.cheapest(s).getFinalCost(), 10.0);
     }
 
     @Test()
     public void testCheapestWithMultipleSales() {
-        List<Sale> s = new ArrayList<>(Arrays.asList(new CarSale("seat", 10.0, 0.0),
-                new PaperclipSale("red", 1000, 1.0)));
+        List<Sale> s = Arrays.asList(new CarSale("seat", 10.0, 0.0),
+                new PaperclipSale("red", 1000, 1.0));
         Assert.assertEquals(Sale.cheapest(s).getFinalCost(), 10.0);
     }
 
@@ -38,8 +38,8 @@ public class SaleTest {
 
     @Test()
     public void testTotalCostWithMultipleSales() {
-        List<Sale> s = new ArrayList<>(Arrays.asList(new CarSale("seat", 10.0, 0.0),
-                new PaperclipSale("red", 1000, 1.0)));
+        List<Sale> s = Arrays.asList(new CarSale("seat", 10.0, 0.0),
+                new PaperclipSale("red", 1000, 1.0));
         Assert.assertEquals(Sale.totalCost(s), 1010.0);
     }
 }
